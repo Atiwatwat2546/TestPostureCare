@@ -447,18 +447,18 @@
 
     // --- Head forward ---
     const headForward = Math.abs(nose.x - shoulder.x) / torsoH;
-    const headStatus = classify(headForward, 0.18, 0.24);
+    const headStatus = classify(headForward, 0.08, 0.14);
     const headDeduction = headStatus === 'bad' ? 35 : headStatus === 'warn' ? 18 : 0;
 
     // --- Shoulder level (FIXED: horizontal reference, not vertical) ---
     const shoulderTilt = angleFromHorizontal(lShoulder, rShoulder);
-    const shoulderStatus = classify(shoulderTilt, 9, 15);
+    const shoulderStatus = classify(shoulderTilt, 4, 8);
     const shoulderDeduction = shoulderStatus === 'bad' ? 25 : shoulderStatus === 'warn' ? 12 : 0;
     const higherSide = lShoulder.y < rShoulder.y ? 'ไหล่ซ้าย' : 'ไหล่ขวา';
 
     // --- Torso lean (unchanged — this one was already correct) ---
     const torsoLean = angleFromVertical(hip, shoulder);
-    const torsoStatus = classify(torsoLean, 12, 18);
+    const torsoStatus = classify(torsoLean, 6, 10);
     const torsoDeduction = torsoStatus === 'bad' ? 30 : torsoStatus === 'warn' ? 15 : 0;
 
     let score = 100 - headDeduction - shoulderDeduction - torsoDeduction;
