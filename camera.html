@@ -414,7 +414,13 @@
   function angleFromHorizontal(a, b) {
     const dx = b.x - a.x;
     const dy = b.y - a.y;
-    return Math.abs(Math.atan2(dy, dx) * 180 / Math.PI);
+    let angle = Math.abs(Math.atan2(dy, dx) * 180 / Math.PI);
+    // atan2 gives 0-180 depending on which way the a->b vector points along
+    // the x-axis. A perfectly level pair of shoulders can come out as either
+    // 0 or 180 depending on left/right landmark order — both mean "flat",
+    // so fold anything above 90 back down (180° flat -> 0° deviation).
+    if (angle > 90) angle = 180 - angle;
+    return angle;
   }
 
   function classify(value, warnT, badT) {
