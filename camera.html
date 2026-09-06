@@ -1,862 +1,1357 @@
-
 <!DOCTYPE html>
 <html lang="th">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover">
 
   <title>PostureCare Camera</title>
 
-  <!-- MediaPipe -->
+
+  <!-- =========================
+       MediaPipe
+  ========================== -->
+
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
 
+
   <style>
-    .camera-version {
-      text-align: center;
-      margin-top: 14px;
-      padding-bottom: 4px;
-
-      font-size: 12px;
-      font-weight: 500;
-      color: #8a968f;
-
-      letter-spacing: 0.3px;
-    }
 
     :root {
+
       --bg: #f6f8f7;
+
       --card: #ffffff;
+
       --text: #17231d;
-      --muted: #718078;
+
+      --muted: #718077;
+
       --primary: #2f8f68;
-      --primary-dark: #267957;
+
+      --primary2: #1f6e50;
+
       --danger: #d85858;
-      --warning: #d99b35;
-      --border: #dfe7e2;
-      --dark: #111;
+
+      --warning: #e2a93b;
+
+      --border: #e4ebe7;
+
+      --shadow:
+        0 10px 30px
+        rgba(31,65,50,.08);
+
     }
+
 
     * {
       box-sizing: border-box;
     }
 
+
     html,
     body {
       margin: 0;
       padding: 0;
-      width: 100%;
       min-height: 100%;
-      font-family:
-        Inter,
-        "Segoe UI",
-        Arial,
-        sans-serif;
-      background: var(--bg);
-      color: var(--text);
     }
+
 
     body {
-      padding: 24px;
+
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background:
+        var(--bg);
+
+      color:
+        var(--text);
+
+      padding:
+        18px;
+
+      padding-bottom:
+        30px;
+
     }
 
-    .container {
-      width: min(1200px, 100%);
-      margin: 0 auto;
+
+    button {
+      font: inherit;
+      cursor: pointer;
     }
+
+
+    .shell {
+
+      width:
+        min(980px,100%);
+
+      margin:
+        0 auto;
+
+    }
+
 
     /* =========================
        HEADER
-    ========================= */
+    ========================== */
 
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 20px;
+    .topbar {
+
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        center;
+
+      padding:
+        4px 0 18px;
+
     }
+
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+
+      font-size:
+        24px;
+
+      font-weight:
+        800;
+
+      letter-spacing:
+        -.5px;
+
     }
 
-    .brand-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #e4f3ec;
-      color: var(--primary);
-      font-size: 22px;
-      font-weight: 800;
+
+    .brand span {
+      color:
+        var(--primary);
     }
 
-    .brand-text h1 {
-      margin: 0;
-      font-size: 22px;
-      font-weight: 800;
+
+    .small {
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
     }
 
-    .brand-text p {
-      margin: 3px 0 0;
-      color: var(--muted);
-      font-size: 13px;
+
+    .status-pill {
+
+      padding:
+        7px 12px;
+
+      border-radius:
+        999px;
+
+      background:
+        #edf3ef;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      font-weight:
+        800;
+
+      white-space:
+        nowrap;
+
     }
 
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 13px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: white;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .status-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #aaa;
-    }
-
-    .status-dot.active {
-      background: var(--primary);
-      box-shadow: 0 0 0 4px rgba(47, 143, 104, 0.12);
-    }
-
-    .status-dot.error {
-      background: var(--danger);
-    }
 
     /* =========================
-       MAIN CARD
-    ========================= */
+       HERO
+    ========================== */
+
+    .hero {
+
+      background:
+        linear-gradient(
+          135deg,
+          #dff3e8,
+          #eff9f3
+        );
+
+      border:
+        1px solid #d3eade;
+
+      border-radius:
+        24px;
+
+      padding:
+        20px;
+
+      margin-bottom:
+        14px;
+
+    }
+
+
+    .hero h1 {
+
+      margin:
+        0 0 6px;
+
+      font-size:
+        27px;
+
+    }
+
+
+    .hero p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+    }
+
+
+    /* =========================
+       CARD
+    ========================== */
 
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 20px;
+
+      background:
+        var(--card);
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        18px;
+
+      padding:
+        18px;
+
       box-shadow:
-        0 10px 30px rgba(20, 40, 30, 0.05);
+        var(--shadow);
+
     }
+
+
+    /* =========================
+       CAMERA
+    ========================== */
 
     .camera-box {
-      position: relative;
-      width: 100%;
 
-      /*
-        ใช้ 4:3 เป็นค่าเริ่มต้น
-        แต่หลังเปิดกล้องจะปรับตาม
-        Aspect Ratio จริงของกล้อง
-      */
-      aspect-ratio: 4 / 3;
+      position:
+        relative;
 
-      overflow: hidden;
-      background: #111;
-      border-radius: 20px;
-      border: 1px solid #1d2520;
+      overflow:
+        hidden;
+
+      background:
+        #111;
+
+      border-radius:
+        20px;
+
+      aspect-ratio:
+        16 / 10;
+
+      border:
+        1px solid #1d2520;
+
     }
 
-    /*
-      สำคัญ:
-      contain จะรักษาสัดส่วนภาพจริง
-      ไม่บีบตัวคนและไม่ crop
-    */
+
     video {
-      position: absolute;
-      inset: 0;
 
-      width: 100%;
-      height: 100%;
+      width:
+        100%;
 
-      display: block;
+      height:
+        100%;
 
-      object-fit: contain;
+      display:
+        block;
 
-      /*
-        กล้องหน้า / webcam มองแบบกระจก
-      */
-      transform: scaleX(-1);
+      object-fit:
+        cover;
 
-      background: #111;
+      transform:
+        scaleX(-1);
+
+      background:
+        #111;
+
     }
 
-    /*
-      Canvas ต้องรักษาสัดส่วนเดียวกับภาพจริง
-    */
+
     canvas {
-      position: absolute;
-      inset: 0;
 
-      width: 100%;
-      height: 100%;
+      position:
+        absolute;
 
-      object-fit: contain;
+      inset:
+        0;
 
-      pointer-events: none;
+      width:
+        100%;
+
+      height:
+        100%;
+
+      pointer-events:
+        none;
+
     }
+
+
+    .camera-status {
+
+      position:
+        absolute;
+
+      left:
+        12px;
+
+      top:
+        12px;
+
+      z-index:
+        10;
+
+      padding:
+        7px 10px;
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(0,0,0,.55);
+
+      color:
+        #fff;
+
+      font-size:
+        12px;
+
+      font-weight:
+        800;
+
+      backdrop-filter:
+        blur(8px);
+
+    }
+
+
+    .camera-status.on {
+
+      background:
+        rgba(47,143,104,.9);
+
+    }
+
+
+    .camera-status.error {
+
+      background:
+        rgba(216,88,88,.9);
+
+    }
+
 
     /* =========================
-       CAMERA OVERLAY
-    ========================= */
+       SCORE
+    ========================== */
 
-    .camera-message {
-      position: absolute;
-      left: 50%;
-      top: 50%;
+    .score-box {
 
-      transform: translate(-50%, -50%);
+      display:
+        flex;
 
-      color: white;
-      background: rgba(0, 0, 0, 0.58);
+      justify-content:
+        space-between;
 
-      padding: 14px 20px;
-      border-radius: 14px;
+      align-items:
+        center;
 
-      font-size: 15px;
-      text-align: center;
+      gap:
+        10px;
 
-      backdrop-filter: blur(8px);
+      margin-top:
+        12px;
 
-      z-index: 5;
+      padding:
+        14px;
+
+      border-radius:
+        16px;
+
+      background:
+        #f5f8f6;
+
     }
 
-    .camera-message.hidden {
-      display: none !important;
+
+    .score {
+
+      font-size:
+        36px;
+
+      font-weight:
+        900;
+
+      line-height:
+        1;
+
     }
+
+
+    .status-good {
+      color:
+        var(--primary2);
+    }
+
+
+    .status-bad {
+      color:
+        var(--danger);
+    }
+
 
     /* =========================
-       POSTURE STATUS
-    ========================= */
+       PROGRESS
+    ========================== */
 
-    .posture-panel {
-      margin-top: 18px;
+    .quality-row {
 
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
+      margin-top:
+        12px;
+
     }
 
-    .posture-status {
-      border-radius: 18px;
-      padding: 18px;
 
-      background: #f7faf8;
-      border: 1px solid var(--border);
+    .quality-header {
+
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        center;
+
+      font-size:
+        12px;
+
+      margin-bottom:
+        5px;
+
     }
 
-    .posture-status.good {
-      background: #eef9f3;
-      border-color: #ccebd9;
+
+    .progress {
+
+      height:
+        11px;
+
+      background:
+        #e9efeb;
+
+      border-radius:
+        999px;
+
+      overflow:
+        hidden;
+
     }
 
-    .posture-status.bad {
-      background: #fff4f4;
-      border-color: #f0d1d1;
-    }
 
-    .posture-status.warning {
-      background: #fff9ed;
-      border-color: #f0dfb6;
-    }
+    .progress > div {
 
-    .posture-title {
-      font-size: 18px;
-      font-weight: 800;
-      margin-bottom: 5px;
-    }
+      height:
+        100%;
 
-    .posture-reason {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
+      background:
+        var(--primary);
 
-    /* =========================
-       METRICS
-    ========================= */
-
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .metric {
-      background: #fafcfb;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
-    }
-
-    .metric-label {
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 6px;
-    }
-
-    .metric-value {
-      font-size: 20px;
-      font-weight: 800;
-    }
-
-    /* =========================
-       CONTROLS
-    ========================= */
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    button {
-      border: none;
-      border-radius: 13px;
-
-      padding: 12px 18px;
-
-      font-size: 14px;
-      font-weight: 700;
-
-      cursor: pointer;
+      width:
+        0%;
 
       transition:
-        transform 0.15s ease,
-        opacity 0.15s ease,
-        background 0.15s ease;
+        width .3s;
+
     }
 
-    button:hover {
-      transform: translateY(-1px);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    .btn-primary {
-      color: white;
-      background: var(--primary);
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-dark);
-    }
-
-    .btn-danger {
-      color: white;
-      background: var(--danger);
-    }
-
-    .btn-secondary {
-      color: var(--text);
-      background: #edf2ef;
-    }
-
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .hidden {
-      display: none !important;
-    }
 
     /* =========================
-       INSTRUCTIONS
-    ========================= */
+       REASON
+    ========================== */
 
-    .instructions {
-      margin-top: 18px;
-      padding: 18px;
+    .note {
 
-      border-radius: 18px;
+      background:
+        #fff9e8;
 
-      background: #f7faf8;
-      border: 1px solid var(--border);
+      border:
+        1px solid #f0dfaa;
+
+      color:
+        #6f5a22;
+
+      border-radius:
+        14px;
+
+      padding:
+        12px;
+
+      font-size:
+        13px;
+
+      margin-top:
+        12px;
+
     }
 
-    .instructions-title {
-      font-weight: 800;
-      margin-bottom: 10px;
+
+    .note.good {
+
+      background:
+        #edf8f2;
+
+      border-color:
+        #cde9da;
+
+      color:
+        var(--primary2);
+
     }
 
-    .instructions ul {
-      margin: 0;
-      padding-left: 20px;
-
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.8;
-    }
 
     /* =========================
-       RESPONSIVE
-    ========================= */
+       ACTIONS
+    ========================== */
 
-    @media (max-width: 800px) {
+    .camera-actions {
+
+      display:
+        flex;
+
+      gap:
+        8px;
+
+      margin-top:
+        14px;
+
+      flex-wrap:
+        wrap;
+
+    }
+
+
+    .btn {
+
+      border:
+        0;
+
+      border-radius:
+        12px;
+
+      padding:
+        12px 16px;
+
+      background:
+        var(--primary);
+
+      color:
+        white;
+
+      font-weight:
+        800;
+
+      transition:
+        .15s ease;
+
+    }
+
+
+    .btn:hover {
+
+      background:
+        var(--primary2);
+
+    }
+
+
+    .btn.danger {
+
+      background:
+        var(--danger);
+
+    }
+
+
+    .btn.danger:hover {
+
+      background:
+        #bd4747;
+
+    }
+
+
+    .btn.secondary {
+
+      background:
+        #edf3ef;
+
+      color:
+        var(--primary2);
+
+    }
+
+
+    .btn:disabled {
+
+      opacity:
+        .45;
+
+      cursor:
+        not-allowed;
+
+    }
+
+
+    /* =========================
+       ERROR
+    ========================== */
+
+    .error {
+
+      display:
+        none;
+
+      margin-top:
+        12px;
+
+      padding:
+        12px;
+
+      border-radius:
+        14px;
+
+      background:
+        #fff0f0;
+
+      border:
+        1px solid #f0cccc;
+
+      color:
+        #a13f3f;
+
+      font-size:
+        13px;
+
+    }
+
+
+    /* =========================
+       INFO
+    ========================== */
+
+    .info-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3,1fr);
+
+      gap:
+        12px;
+
+      margin-top:
+        12px;
+
+    }
+
+
+    .info-card {
+
+      background:
+        #fff;
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        16px;
+
+      padding:
+        14px;
+
+      box-shadow:
+        var(--shadow);
+
+    }
+
+
+    .info-label {
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      margin-bottom:
+        6px;
+
+    }
+
+
+    .info-value {
+
+      font-size:
+        22px;
+
+      font-weight:
+        900;
+
+    }
+
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    .footer {
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
+      margin-top:
+        16px;
+
+    }
+
+
+    @media(max-width:700px) {
+
       body {
-        padding: 12px;
+        padding:
+          12px;
       }
 
-      .card {
-        padding: 12px;
-        border-radius: 18px;
+
+      .topbar {
+
+        align-items:
+          flex-start;
+
+        gap:
+          10px;
+
       }
 
-      .camera-box {
-        border-radius: 16px;
+
+      .hero h1 {
+        font-size:
+          23px;
       }
 
-      .metrics {
-        grid-template-columns: repeat(2, 1fr);
+
+      .info-grid {
+
+        grid-template-columns:
+          1fr;
+
       }
 
-      .header {
-        align-items: flex-start;
+
+      .camera-actions {
+
+        flex-direction:
+          column;
+
       }
 
-      .status {
-        display: none;
+
+      .camera-actions .btn {
+
+        width:
+          100%;
+
       }
+
     }
 
-    @media (max-width: 480px) {
-      .metrics {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .brand-text h1 {
-        font-size: 19px;
-      }
-    }
   </style>
+
 </head>
+
 
 <body>
 
-  <div class="container">
 
-    <!-- HEADER -->
-    <div class="header">
+<div class="shell">
+
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+
+  <div class="topbar">
+
+    <div>
 
       <div class="brand">
-
-        <div class="brand-icon">
-          P
-        </div>
-
-        <div class="brand-text">
-          <h1>PostureCare</h1>
-          <p>ระบบตรวจจับท่านั่งแบบ Real-time</p>
-        </div>
-
+        Posture<span>Care</span>
       </div>
 
-      <div class="status">
-
-        <span id="statusDot" class="status-dot"></span>
-
-        <span id="cameraStatus">
-          กล้องยังไม่ทำงาน
-        </span>
-
+      <div class="small">
+        AI Posture Detection
       </div>
 
     </div>
 
 
-    <!-- MAIN -->
-    <div class="card">
+    <div
+      id="status"
+      class="status-pill">
 
-      <!-- CAMERA -->
-      <div class="camera-box">
+      ยังไม่ได้เปิดกล้อง
 
-        <video id="video" autoplay muted playsinline>
-        </video>
-
-        <canvas id="canvas"></canvas>
-
-        <div id="cameraMessage" class="camera-message">
-
-          กำลังเตรียมกล้อง...
-
-        </div>
-
-      </div>
-
-
-      <!-- POSTURE -->
-      <div class="posture-panel">
-
-        <div id="postureStatus" class="posture-status">
-
-          <div id="postureTitle" class="posture-title">
-
-            รอการตรวจจับ
-
-          </div>
-
-          <div id="postureReason" class="posture-reason">
-
-            กรุณานั่งให้อยู่ในเฟรมกล้อง
-
-          </div>
-
-        </div>
-
-
-        <!-- METRICS -->
-        <div class="metrics">
-
-          <div class="metric">
-
-            <div class="metric-label">
-              Posture Score
-            </div>
-
-            <div id="score" class="metric-value">
-
-              --
-
-            </div>
-
-          </div>
-
-
-          <div class="metric">
-
-            <div class="metric-label">
-              Head Forward
-            </div>
-
-            <div id="headForward" class="metric-value">
-
-              --
-
-            </div>
-
-          </div>
-
-
-          <div class="metric">
-
-            <div class="metric-label">
-              Shoulder Tilt
-            </div>
-
-            <div id="shoulderTilt" class="metric-value">
-
-              --
-
-            </div>
-
-          </div>
-
-
-          <div class="metric">
-
-            <div class="metric-label">
-              Torso Lean
-            </div>
-
-            <div id="torsoLean" class="metric-value">
-
-              --
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- CONTROLS -->
-        <div class="controls">
-
-          <button id="startBtn" class="btn-primary">
-
-            เปิดกล้อง
-
-          </button>
-
-          <button id="stopBtn" class="btn-danger hidden">
-
-            หยุดกล้อง
-
-          </button>
-
-          <button id="closeBtn" class="btn-secondary">
-
-            ปิดหน้าต่าง
-
-          </button>
-
-        </div>
-
-
-        <!-- INSTRUCTIONS -->
-        <div class="instructions">
-
-          <div class="instructions-title">
-            📷 วิธีจัดตำแหน่งกล้องให้ตรวจจับได้ดีที่สุด
-          </div>
-
-          <ul>
-
-            <li>
-              วางกล้องห่างจากตัวประมาณ 1.5–2.5 เมตร
-            </li>
-
-            <li>
-              ให้กล้องอยู่ประมาณระดับช่วงอกหรือไหล่
-            </li>
-
-            <li>
-              พยายามให้เห็นตั้งแต่ศีรษะจนถึงขา
-            </li>
-
-            <li>
-              อย่านั่งชิดขอบเฟรมมากเกินไป
-            </li>
-
-            <li>
-              ควรมีแสงสว่างเพียงพอและไม่มีแสงย้อนจากด้านหลัง
-            </li>
-
-          </ul>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- VERSION -->
-    <div class="camera-version">
-      PostureCare Camera v1.0.0
     </div>
 
   </div>
 
 
-  <script>
+  <!-- =========================
+       HERO
+  ========================== -->
 
-    /* =========================================================
-       ELEMENTS
-    ========================================================= */
+  <div class="hero">
 
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+    <h1>
+      Camera
+    </h1>
 
-    const startBtn = document.getElementById('startBtn');
-    const stopBtn = document.getElementById('stopBtn');
-    const closeBtn = document.getElementById('closeBtn');
+    <p>
+      วางกล้องให้เห็นศีรษะ ไหล่
+      และลำตัวชัดเจน
+      โดยเฉพาะมุมด้านข้าง
+    </p>
 
-    const cameraStatus = document.getElementById('cameraStatus');
-    const statusDot = document.getElementById('statusDot');
-
-    const cameraMessage = document.getElementById('cameraMessage');
-
-    const postureStatus = document.getElementById('postureStatus');
-    const postureTitle = document.getElementById('postureTitle');
-    const postureReason = document.getElementById('postureReason');
-
-    const scoreEl = document.getElementById('score');
-    const headForwardEl = document.getElementById('headForward');
-    const shoulderTiltEl = document.getElementById('shoulderTilt');
-    const torsoLeanEl = document.getElementById('torsoLean');
+  </div>
 
 
-    /* =========================================================
-       VARIABLES
-    ========================================================= */
+  <!-- =========================
+       CAMERA CARD
+  ========================== -->
 
-    let stream = null;
-    let camera = null;
-    let pose = null;
-
-    let isRunning = false;
-
-    let stablePosture = null;
-    let stableStartedAt = 0;
-
-    /*
-      ส่ง Log ทุก 20 วินาที
-    */
-    const LOG_INTERVAL = 20000;
+  <div class="card">
 
 
-    /* =========================================================
-       MESSAGE TO INDEX.HTML
-    ========================================================= */
+    <div class="camera-box">
 
-    function sendToParent(type, data = {}) {
 
-      const message = {
-        source: 'PostureCareCamera',
-        type: type,
-        ...data
-      };
+      <video
+        id="video"
+        autoplay
+        playsinline
+        muted>
+      </video>
 
-      console.log(
-        'ส่งข้อมูลไปยัง Index:',
-        message
+
+      <canvas
+        id="canvas">
+      </canvas>
+
+
+      <div
+        id="cameraStatus"
+        class="camera-status">
+
+        Camera OFF
+
+      </div>
+
+
+    </div>
+
+
+    <!-- =========================
+         SCORE
+    ========================== -->
+
+    <div class="score-box">
+
+
+      <div>
+
+        <div class="small">
+          สถานะท่านั่ง
+        </div>
+
+        <div
+          id="posture"
+          class="score status-good">
+
+          พร้อมตรวจ
+
+        </div>
+
+      </div>
+
+
+      <div style="text-align:right">
+
+        <div class="small">
+          คะแนน
+        </div>
+
+        <div
+          id="score"
+          class="score">
+
+          —
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- =========================
+         QUALITY
+    ========================== -->
+
+    <div class="quality-row">
+
+
+      <div class="quality-header">
+
+        <span>
+          คุณภาพท่านั่ง
+        </span>
+
+        <strong
+          id="scoreText">
+
+          ยังไม่มีข้อมูล
+
+        </strong>
+
+      </div>
+
+
+      <div class="progress">
+
+        <div
+          id="scoreBar">
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- =========================
+         REASON
+    ========================== -->
+
+    <div
+      id="reason"
+      class="note hidden">
+
+    </div>
+
+
+    <!-- =========================
+         ERROR
+    ========================== -->
+
+    <div
+      id="error"
+      class="error">
+    </div>
+
+
+    <!-- =========================
+         BUTTONS
+    ========================== -->
+
+    <div class="camera-actions">
+
+
+      <button
+        id="startBtn"
+        class="btn"
+        onclick="startCamera()">
+
+        📷 เริ่มกล้อง
+
+      </button>
+
+
+      <button
+        id="stopBtn"
+        class="btn danger"
+        onclick="stopCamera()"
+        disabled>
+
+        ⏹ หยุดกล้อง
+
+      </button>
+
+
+      <button
+        class="btn secondary"
+        onclick="window.close()">
+
+        ← ปิดหน้าต่าง
+
+      </button>
+
+
+    </div>
+
+
+  </div>
+
+
+  <!-- =========================
+       INFO
+  ========================== -->
+
+  <div class="info-grid">
+
+
+    <div class="info-card">
+
+      <div class="info-label">
+        ตรวจจับ
+      </div>
+
+      <div
+        id="detection"
+        class="info-value">
+
+        —
+
+      </div>
+
+    </div>
+
+
+    <div class="info-card">
+
+      <div class="info-label">
+        สถานะกล้อง
+      </div>
+
+      <div
+        id="cameraState"
+        class="info-value">
+
+        OFF
+
+      </div>
+
+    </div>
+
+
+    <div class="info-card">
+
+      <div class="info-label">
+        AI Model
+      </div>
+
+      <div class="info-value">
+
+        MediaPipe
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+  <div class="footer">
+
+    PostureCare • AI Posture Detection
+
+  </div>
+
+
+</div>
+
+
+<script>
+
+
+  /* ==================================================
+     ELEMENTS
+  ================================================== */
+
+  const video =
+    document.getElementById(
+      'video'
+    );
+
+
+  const canvas =
+    document.getElementById(
+      'canvas'
+    );
+
+
+  const ctx =
+    canvas.getContext(
+      '2d'
+    );
+
+
+  const statusEl =
+    document.getElementById(
+      'status'
+    );
+
+
+  const cameraStatusEl =
+    document.getElementById(
+      'cameraStatus'
+    );
+
+
+  const cameraStateEl =
+    document.getElementById(
+      'cameraState'
+    );
+
+
+  const postureEl =
+    document.getElementById(
+      'posture'
+    );
+
+
+  const scoreEl =
+    document.getElementById(
+      'score'
+    );
+
+
+  const scoreTextEl =
+    document.getElementById(
+      'scoreText'
+    );
+
+
+  const scoreBarEl =
+    document.getElementById(
+      'scoreBar'
+    );
+
+
+  const reasonEl =
+    document.getElementById(
+      'reason'
+    );
+
+
+  const detectionEl =
+    document.getElementById(
+      'detection'
+    );
+
+
+  const errorEl =
+    document.getElementById(
+      'error'
+    );
+
+
+  const startBtn =
+    document.getElementById(
+      'startBtn'
+    );
+
+
+  const stopBtn =
+    document.getElementById(
+      'stopBtn'
+    );
+
+
+  /* ==================================================
+     STATE
+  ================================================== */
+
+  let stream =
+    null;
+
+
+  let pose =
+    null;
+
+
+  let cameraRunning =
+    false;
+
+
+  let poseProcessing =
+    false;
+
+
+  let lastLogTime =
+    0;
+
+
+  const LOG_INTERVAL =
+    20000;
+
+
+  let stablePosture =
+    null;
+
+
+  let stableStartedAt =
+    0;
+
+
+  /* ==================================================
+     SEND TO INDEX.HTML
+  ================================================== */
+
+  function sendToParent(
+    type,
+    data = {}
+  ) {
+
+    if (
+      window.opener &&
+      !window.opener.closed
+    ) {
+
+      window.opener.postMessage(
+
+        {
+
+          source:
+            'PostureCareCamera',
+
+          type:
+            type,
+
+          ...data
+
+        },
+
+        '*'
+
       );
+
+    }
+
+  }
+
+
+  /* ==================================================
+     START CAMERA
+  ================================================== */
+
+  async function startCamera() {
+
+    hideError();
+
+
+    if (cameraRunning) {
+      return;
+    }
+
+
+    try {
+
 
       if (
-        window.opener &&
-        !window.opener.closed
+        !navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia
       ) {
 
-        window.opener.postMessage(
-          message,
-          '*'
-        );
-
-      } else {
-
-        console.warn(
-          'ไม่พบหน้าหลัก / window.opener'
+        throw new Error(
+          'Browser นี้ไม่รองรับการใช้งานกล้อง'
         );
 
       }
 
-    }
+
+      statusEl.textContent =
+        'กำลังขอสิทธิ์กล้อง...';
 
 
-    /* =========================================================
-       UPDATE CAMERA STATUS
-    ========================================================= */
-
-    function setCameraStatus(text, state = '') {
-
-      cameraStatus.textContent = text;
-
-      statusDot.classList.remove(
-        'active',
-        'error'
-      );
-
-      if (state === 'active') {
-        statusDot.classList.add('active');
-      }
-
-      if (state === 'error') {
-        statusDot.classList.add('error');
-      }
-
-    }
+      cameraStatusEl.textContent =
+        'กำลังเปิดกล้อง...';
 
 
-    /* =========================================================
-       SETUP MEDIAPIPE POSE
-    ========================================================= */
-
-    function setupPose() {
-
-      pose = new Pose({
-        locateFile: file => {
-          return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
-        }
-      });
+      cameraStateEl.textContent =
+        'กำลังเปิด';
 
 
-      pose.setOptions({
-
-        /*
-          1 = balance ระหว่างความแม่นกับความเร็ว
-        */
-        modelComplexity: 1,
-
-        smoothLandmarks: true,
-
-        enableSegmentation: false,
-
-        smoothSegmentation: false,
-
-        minDetectionConfidence: 0.55,
-
-        minTrackingConfidence: 0.55
-
-      });
+      startBtn.disabled =
+        true;
 
 
-      pose.onResults(onPoseResults);
-
-    }
-
-
-    /* =========================================================
-       START CAMERA
-    ========================================================= */
-
-    async function startCamera() {
-
-      if (isRunning) {
-        return;
-      }
-
-      try {
-
-        setCameraStatus(
-          'กำลังเปิดกล้อง...',
-          ''
-        );
-
-        cameraMessage.classList.remove(
-          'hidden'
-        );
-
-        cameraMessage.textContent =
-          'กำลังเปิดกล้อง...';
-
-
-        /*
-          ขอภาพ 4:3 ก่อน
-          
-          1280 x 960
-          
-          ถ้ากล้องรองรับ จะได้พื้นที่แนวตั้งมากขึ้น
-          เหมาะกับการเห็นตัวคน
-
-          ถ้ากล้องไม่รองรับ Browser จะเลือก
-          resolution ที่เหมาะสมให้อัตโนมัติ
-        */
-        stream =
-          await navigator.mediaDevices.getUserMedia({
+      stream =
+        await navigator
+          .mediaDevices
+          .getUserMedia({
 
             video: {
 
-              facingMode: 'user',
+              facingMode:
+                'user',
 
               width: {
                 ideal: 1280
               },
 
               height: {
-                ideal: 960
-              },
-
-              aspectRatio: {
-                ideal: 4 / 3
+                ideal: 720
               },
 
               frameRate: {
@@ -866,1124 +1361,1395 @@
 
             },
 
-            audio: false
+            audio:
+              false
 
           });
 
 
-        video.srcObject = stream;
+      video.srcObject =
+        stream;
 
-        await video.play();
 
+      await video.play();
 
-        /*
-          =====================================================
-          สำคัญมาก
-          
-          ปรับสัดส่วนของกล่องตามภาพจริงจากกล้อง
-          
-          เพื่อป้องกันคนถูกบีบ / ยืด
-          =====================================================
-        */
 
-        if (
-          video.videoWidth &&
-          video.videoHeight
-        ) {
+      cameraRunning =
+        true;
 
-          const realWidth =
-            video.videoWidth;
 
-          const realHeight =
-            video.videoHeight;
+      stopBtn.disabled =
+        false;
 
 
-          const realAspect =
-            realWidth /
-            realHeight;
+      statusEl.textContent =
+        'กำลังตรวจจับ';
 
 
-          document.querySelector(
-            '.camera-box'
-          ).style.aspectRatio =
-            `${realWidth} / ${realHeight}`;
+      cameraStatusEl.textContent =
+        '● Camera ON';
 
 
-          console.log(
-            'ใช้ Aspect Ratio จริง:',
-            realWidth,
-            'x',
-            realHeight,
-            '(' +
-            realAspect.toFixed(3) +
-            ')'
-          );
-
-        }
-
-
-        /*
-          Reset posture timer
-        */
-
-        stablePosture = null;
-        stableStartedAt = 0;
-
-
-        isRunning = true;
-
-
-        startBtn.classList.add(
-          'hidden'
-        );
-
-        stopBtn.classList.remove(
-          'hidden'
-        );
-
-
-        setCameraStatus(
-          'กำลังตรวจจับ',
-          'active'
-        );
-
-
-        cameraMessage.classList.add(
-          'hidden'
-        );
-
-
-        /*
-          แสดง resolution จริง
-        */
-
-        console.log(
-          'Camera resolution:',
-          video.videoWidth,
-          'x',
-          video.videoHeight
-        );
-
-
-        /*
-          เริ่ม MediaPipe Camera
-        */
-
-        camera = new Camera(
-          video,
-          {
-
-            onFrame: async () => {
-
-              if (!isRunning) {
-                return;
-              }
-
-              await pose.send({
-                image: video
-              });
-
-            },
-
-            width: video.videoWidth || 1280,
-            height: video.videoHeight || 960
-
-          }
-        );
-
-
-        camera.start();
-
-
-        sendToParent(
-          'CAMERA_STARTED'
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          'เปิดกล้องไม่สำเร็จ:',
-          error
-        );
-
-        isRunning = false;
-
-        setCameraStatus(
-          'เปิดกล้องไม่สำเร็จ',
-          'error'
-        );
-
-        cameraMessage.classList.remove(
-          'hidden'
-        );
-
-        cameraMessage.textContent =
-          'ไม่สามารถเปิดกล้องได้';
-
-
-        sendToParent(
-          'CAMERA_ERROR',
-          {
-            error: error.message
-          }
-        );
-
-      }
-
-    }
-
-
-    /* =========================================================
-       STOP CAMERA
-    ========================================================= */
-
-    function stopCamera() {
-
-      isRunning = false;
-
-
-      if (camera) {
-
-        try {
-          camera.stop();
-        } catch (_) { }
-
-        camera = null;
-
-      }
-
-
-      if (stream) {
-
-        stream
-          .getTracks()
-          .forEach(track => {
-
-            try {
-              track.stop();
-            } catch (_) { }
-
-          });
-
-        stream = null;
-
-      }
-
-
-      video.srcObject = null;
-
-
-      ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
+      cameraStatusEl.classList.add(
+        'on'
       );
 
 
-      stablePosture = null;
-      stableStartedAt = 0;
+      cameraStateEl.textContent =
+        'ON';
 
 
-      startBtn.classList.remove(
-        'hidden'
-      );
-
-      stopBtn.classList.add(
-        'hidden'
-      );
+      detectionEl.textContent =
+        'กำลังตรวจจับ';
 
 
-      setCameraStatus(
-        'กล้องหยุดทำงาน',
-        ''
-      );
+      postureEl.textContent =
+        'กำลังตรวจ...';
 
 
-      cameraMessage.classList.remove(
-        'hidden'
-      );
-
-      cameraMessage.textContent =
-        'กล้องหยุดทำงาน';
+      messageReset();
 
 
-      postureTitle.textContent =
-        'รอการตรวจจับ';
-
-      postureReason.textContent =
-        'กรุณาเปิดกล้องเพื่อเริ่มตรวจจับ';
+      lastLogTime =
+        Date.now();
 
 
-      scoreEl.textContent = '--';
-      headForwardEl.textContent = '--';
-      shoulderTiltEl.textContent = '--';
-      torsoLeanEl.textContent = '--';
+      stablePosture =
+        null;
 
 
-      postureStatus.className =
-        'posture-status';
+      stableStartedAt =
+        0;
 
 
       sendToParent(
-        'CAMERA_STOPPED'
+        'CAMERA_STARTED'
+      );
+
+
+      await setupPose();
+
+
+    }
+
+    catch(error) {
+
+      console.error(
+        'Camera error:',
+        error
+      );
+
+
+      showCameraError(
+        error
       );
 
     }
 
+  }
 
-    /* =========================================================
-       POSE RESULTS
-    ========================================================= */
 
-    function onPoseResults(results) {
+  /* ==================================================
+     MEDIAPIPE SETUP
+  ================================================== */
 
-      if (!isRunning) {
-        return;
+  async function setupPose() {
+
+    pose =
+      new Pose({
+
+        locateFile:
+          function(file) {
+
+            return (
+              'https://cdn.jsdelivr.net/npm/@mediapipe/pose/' +
+              file
+            );
+
+          }
+
+      });
+
+
+    pose.setOptions({
+
+      modelComplexity:
+        1,
+
+      smoothLandmarks:
+        true,
+
+      enableSegmentation:
+        false,
+
+      smoothSegmentation:
+        false,
+
+      minDetectionConfidence:
+        0.55,
+
+      minTrackingConfidence:
+        0.55
+
+    });
+
+
+    pose.onResults(
+      onPoseResults
+    );
+
+
+    processFrame();
+
+  }
+
+
+  /* ==================================================
+     PROCESS VIDEO
+  ================================================== */
+
+  async function processFrame() {
+
+    if (!cameraRunning) {
+      return;
+    }
+
+
+    if (
+      video.readyState >= 2 &&
+      pose &&
+      !poseProcessing
+    ) {
+
+      poseProcessing =
+        true;
+
+
+      try {
+
+        await pose.send({
+          image:
+            video
+        });
+
       }
 
+      catch(error) {
 
-      /*
-        ใช้ขนาดภาพจริงจากกล้อง
-        ไม่ hard-code 1280x720
-      */
-
-      const imageWidth =
-        results.image.videoWidth ||
-        results.image.width ||
-        video.videoWidth ||
-        1280;
-
-      const imageHeight =
-        results.image.videoHeight ||
-        results.image.height ||
-        video.videoHeight ||
-        960;
-
-
-      /*
-        Canvas internal resolution
-        ตรงกับภาพจริง
-      */
-
-      if (
-        canvas.width !== imageWidth ||
-        canvas.height !== imageHeight
-      ) {
-
-        canvas.width = imageWidth;
-        canvas.height = imageHeight;
-
-      }
-
-
-      ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-
-
-      /*
-        Mirror ภาพบน Canvas
-        ให้เหมือน video
-      */
-
-      ctx.save();
-
-      ctx.translate(
-        canvas.width,
-        0
-      );
-
-      ctx.scale(
-        -1,
-        1
-      );
-
-
-      /*
-        วาดภาพกล้องลง Canvas
-      */
-
-      ctx.drawImage(
-        results.image,
-        0,
-        0,
-        imageWidth,
-        imageHeight
-      );
-
-
-      /*
-        ไม่มีคนในเฟรม
-      */
-
-      if (
-        !results.poseLandmarks ||
-        results.poseLandmarks.length === 0
-      ) {
-
-        ctx.restore();
-
-        postureTitle.textContent =
-          'ไม่พบคนในภาพ';
-
-        postureReason.textContent =
-          'กรุณานั่งให้อยู่ในเฟรมกล้อง';
-
-
-        postureStatus.className =
-          'posture-status warning';
-
-
-        sendToParent(
-          'NO_POSE'
+        console.error(
+          'Pose error:',
+          error
         );
 
-        return;
+      }
+
+      finally {
+
+        poseProcessing =
+          false;
 
       }
 
-
-      /*
-        วาด Skeleton
-      */
-
-      drawConnectors(
-        ctx,
-        results.poseLandmarks,
-        POSE_CONNECTIONS,
-        {
-          color: '#2f8f68',
-          lineWidth: 4
-        }
-      );
+    }
 
 
-      /*
-        วาดจุด Landmark
-      */
+    requestAnimationFrame(
+      processFrame
+    );
 
-      drawLandmarks(
-        ctx,
-        results.poseLandmarks,
-        {
-          color: '#ffffff',
-          fillColor: '#2f8f68',
-          lineWidth: 2,
-          radius: 4
-        }
-      );
+  }
 
+
+  /* ==================================================
+     POSE RESULT
+  ================================================== */
+
+  function onPoseResults(
+    results
+  ) {
+
+    if (!cameraRunning) {
+      return;
+    }
+
+
+    canvas.width =
+      video.videoWidth ||
+      1280;
+
+
+    canvas.height =
+      video.videoHeight ||
+      720;
+
+
+    ctx.clearRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+
+    /*
+     * Mirror canvas
+     */
+
+    ctx.save();
+
+
+    ctx.translate(
+      canvas.width,
+      0
+    );
+
+
+    ctx.scale(
+      -1,
+      1
+    );
+
+
+    /*
+     * Draw video
+     */
+
+    ctx.drawImage(
+
+      results.image,
+
+      0,
+      0,
+
+      canvas.width,
+      canvas.height
+
+    );
+
+
+    /*
+     * NO POSE
+     */
+
+    if (
+      !results.poseLandmarks
+    ) {
 
       ctx.restore();
 
 
-      /*
-        ประเมินท่าทาง
-      */
+      postureEl.textContent =
+        'ไม่พบคน';
 
-      const metrics =
-        evaluatePosture(
-          results.poseLandmarks
-        );
 
-
-      /*
-        Update UI
-      */
-
-      updatePostureUI(
-        metrics
-      );
-
-
-      /*
-        ส่งสถานะไป Index
-      */
-
-      sendToParent(
-        'POSTURE_STATE',
-        {
-          posture: metrics
-        }
-      );
-
-
-      /*
-        เก็บ Log
-      */
-
-      accumulatePosture(
-        metrics
-      );
-
-    }
-
-
-    /* =========================================================
-       POSTURE EVALUATION
-    ========================================================= */
-
-    function evaluatePosture(lm) {
-
-      const nose = lm[0];
-
-      const leftShoulder = lm[11];
-      const rightShoulder = lm[12];
-
-      const leftHip = lm[23];
-      const rightHip = lm[24];
-
-
-      /*
-        ตรวจสอบ visibility
-      */
-
-      const required = [
-        nose,
-        leftShoulder,
-        rightShoulder,
-        leftHip,
-        rightHip
-      ];
-
-
-      const valid =
-        required.every(
-          p =>
-            p &&
-            (p.visibility === undefined ||
-              p.visibility > 0.45)
-        );
-
-
-      if (!valid) {
-
-        return {
-
-          valid: false,
-
-          good: false,
-
-          score: 0,
-
-          reason:
-            'ไม่สามารถตรวจจับตำแหน่งร่างกายได้',
-
-          headForward: 0,
-
-          shoulderTilt: 0,
-
-          torsoLean: 0
-
-        };
-
-      }
-
-
-      /*
-        จุดกึ่งกลางหัวไหล่
-      */
-
-      const shoulderX =
-        (
-          leftShoulder.x +
-          rightShoulder.x
-        ) / 2;
-
-      const shoulderY =
-        (
-          leftShoulder.y +
-          rightShoulder.y
-        ) / 2;
-
-
-      /*
-        จุดกึ่งกลางสะโพก
-      */
-
-      const hipX =
-        (
-          leftHip.x +
-          rightHip.x
-        ) / 2;
-
-      const hipY =
-        (
-          leftHip.y +
-          rightHip.y
-        ) / 2;
-
-
-      /*
-        ความสูงของลำตัว
-      */
-
-      const torsoH =
-        Math.max(
-          Math.abs(
-            hipY - shoulderY
-          ),
-          0.05
-        );
-
-
-      /* =====================================================
-         HEAD FORWARD
-      ===================================================== */
-
-      const headForward =
-        Math.abs(
-          nose.x - shoulderX
-        ) / torsoH;
-
-
-      /* =====================================================
-         SHOULDER TILT
-      ===================================================== */
-
-      const shoulderDx =
-        rightShoulder.x -
-        leftShoulder.x;
-
-      const shoulderDy =
-        rightShoulder.y -
-        leftShoulder.y;
-
-
-      let shoulderTilt =
-        Math.abs(
-          Math.atan2(
-            shoulderDy,
-            shoulderDx
-          ) *
-          180 /
-          Math.PI
-        );
-
-
-      /*
-        ทำให้ค่ามุมอยู่ 0–90
-      */
-
-      if (shoulderTilt > 90) {
-        shoulderTilt =
-          180 - shoulderTilt;
-      }
-
-
-      /* =====================================================
-         TORSO LEAN
-      ===================================================== */
-
-      const torsoDx =
-        hipX - shoulderX;
-
-      const torsoDy =
-        hipY - shoulderY;
-
-
-      let torsoLean =
-        Math.abs(
-          Math.atan2(
-            torsoDx,
-            Math.abs(torsoDy)
-          ) *
-          180 /
-          Math.PI
-        );
-
-
-      /* =====================================================
-         SCORE
-      ===================================================== */
-
-      let score = 100;
-
-      let reasons = [];
-
-
-      /*
-        Head forward
-      */
-
-      if (headForward > 0.42) {
-
-        score -= 35;
-
-        reasons.push(
-          'ศีรษะยื่นไปด้านหน้า'
-        );
-
-      } else if (headForward > 0.30) {
-
-        score -= 18;
-
-        reasons.push(
-          'ศีรษะเริ่มยื่นไปด้านหน้า'
-        );
-
-      }
-
-
-      /*
-        Shoulder
-      */
-
-      if (shoulderTilt > 12) {
-
-        score -= 25;
-
-        reasons.push(
-          'ไหล่เอียงมาก'
-        );
-
-      } else if (shoulderTilt > 7) {
-
-        score -= 12;
-
-        reasons.push(
-          'ไหล่เริ่มเอียง'
-        );
-
-      }
-
-
-      /*
-        Torso
-      */
-
-      if (torsoLean > 18) {
-
-        score -= 30;
-
-        reasons.push(
-          'ลำตัวเอนไปด้านข้าง'
-        );
-
-      } else if (torsoLean > 10) {
-
-        score -= 15;
-
-        reasons.push(
-          'ลำตัวเริ่มเอียง'
-        );
-
-      }
-
-
-      score =
-        Math.max(
-          0,
-          Math.min(
-            100,
-            Math.round(score)
-          )
-        );
-
-
-      const good =
-        score >= 78;
-
-
-      let reason;
-
-
-      if (good) {
-
-        reason =
-          'ท่านั่งอยู่ในเกณฑ์ที่ดี';
-
-      } else {
-
-        reason =
-          reasons.length
-            ? reasons.join(' • ')
-            : 'ควรปรับท่านั่ง';
-
-      }
-
-
-      return {
-
-        valid: true,
-
-        good,
-
-        score,
-
-        reason,
-
-        headForward:
-
-          Number(
-            headForward.toFixed(3)
-          ),
-
-        shoulderTilt:
-
-          Number(
-            shoulderTilt.toFixed(1)
-          ),
-
-        torsoLean:
-
-          Number(
-            torsoLean.toFixed(1)
-          )
-
-      };
-
-    }
-
-
-    /* =========================================================
-       UPDATE POSTURE UI
-    ========================================================= */
-
-    function updatePostureUI(m) {
-
-      if (!m || !m.valid) {
-
-        postureStatus.className =
-          'posture-status warning';
-
-        postureTitle.textContent =
-          'กำลังตรวจจับ...';
-
-        postureReason.textContent =
-          m?.reason ||
-          'กรุณาอยู่ในเฟรมกล้อง';
-
-        scoreEl.textContent = '--';
-
-        return;
-
-      }
+      postureEl.className =
+        'score status-bad';
 
 
       scoreEl.textContent =
-        m.score;
+        '—';
 
 
-      headForwardEl.textContent =
-        m.headForward;
+      scoreBarEl.style.width =
+        '0%';
 
 
-      shoulderTiltEl.textContent =
-        m.shoulderTilt + '°';
+      scoreTextEl.textContent =
+        'ไม่พบร่างกาย';
 
 
-      torsoLeanEl.textContent =
-        m.torsoLean + '°';
+      detectionEl.textContent =
+        'ไม่พบ';
 
 
-      if (m.good) {
-
-        postureStatus.className =
-          'posture-status good';
-
-        postureTitle.textContent =
-          '✓ ท่านั่งดี';
-
-        postureReason.textContent =
-          m.reason;
-
-      } else {
-
-        postureStatus.className =
-          'posture-status bad';
-
-        postureTitle.textContent =
-          '⚠ ควรปรับท่านั่ง';
-
-        postureReason.textContent =
-          m.reason;
-
-      }
-
-    }
+      statusEl.textContent =
+        'ไม่พบร่างกาย';
 
 
-    /* =========================================================
-       ACCUMULATE POSTURE
-    ========================================================= */
-
-    function accumulatePosture(m) {
-
-      if (!m || !m.valid) {
-        return;
-      }
+      messageReset();
 
 
-      const now =
-        Date.now();
+      reasonEl.textContent =
+        'กรุณานั่งให้เห็นศีรษะ ไหล่ และลำตัว';
 
 
-      const type =
-        m.good
-          ? 'good'
-          : 'needs_adjustment';
-
-
-      /*
-        ถ้าเปลี่ยนสถานะ
-        เริ่มจับเวลาใหม่
-      */
-
-      if (
-        stablePosture !== type
-      ) {
-
-        stablePosture =
-          type;
-
-        stableStartedAt =
-          now;
-
-        console.log(
-          'เริ่มจับเวลาท่านั่ง:',
-          type
-        );
-
-        return;
-
-      }
-
-
-      /*
-        เวลาที่อยู่ในท่านั้น
-      */
-
-      const stableMs =
-        now -
-        stableStartedAt;
-
-
-      /*
-        ยังไม่ถึง 20 วินาที
-      */
-
-      if (
-        stableMs <
-        LOG_INTERVAL
-      ) {
-
-        return;
-
-      }
-
-
-      /*
-        ระยะเวลาที่จะบันทึก
-      */
-
-      const durationSec =
-        Math.min(
-          60,
-          Math.max(
-            5,
-            Math.round(
-              stableMs / 1000
-            )
-          )
-        );
-
-
-      const log = {
-
-        posture:
-          type,
-
-        reason:
-          String(
-            m.reason || ''
-          ),
-
-        score:
-          Number(
-            m.score || 0
-          ),
-
-        headForward:
-          Number(
-            m.headForward || 0
-          ),
-
-        shoulderTilt:
-          Number(
-            m.shoulderTilt || 0
-          ),
-
-        torsoLean:
-          Number(
-            m.torsoLean || 0
-          ),
-
-        durationSec:
-          durationSec
-
-      };
-
-
-      console.log(
-        'กำลังส่ง POSTURE_LOG:',
-        log
+      reasonEl.classList.remove(
+        'hidden'
       );
 
 
       sendToParent(
-        'POSTURE_LOG',
-        {
-          log
-        }
+        'NO_POSE'
       );
 
 
-      /*
-        Reset timer
-      */
+      return;
+
+    }
+
+
+    /*
+     * Draw skeleton
+     */
+
+    try {
+
+      drawConnectors(
+
+        ctx,
+
+        results.poseLandmarks,
+
+        POSE_CONNECTIONS,
+
+        {
+
+          color:
+            '#2f8f68',
+
+          lineWidth:
+            3
+
+        }
+
+      );
+
+
+      drawLandmarks(
+
+        ctx,
+
+        results.poseLandmarks,
+
+        {
+
+          color:
+            '#ffffff',
+
+          lineWidth:
+            1,
+
+          radius:
+            4
+
+        }
+
+      );
+
+    }
+
+    catch(error) {
+
+      console.warn(
+        'Drawing error:',
+        error
+      );
+
+    }
+
+
+    ctx.restore();
+
+
+    /*
+     * Evaluate
+     */
+
+    const posture =
+      evaluatePosture(
+        results.poseLandmarks
+      );
+
+
+    updateUI(
+      posture
+    );
+
+
+    /*
+     * Send realtime result
+     */
+
+    sendToParent(
+
+      'POSTURE_STATE',
+
+      {
+
+        posture:
+          posture
+
+      }
+
+    );
+
+
+    /*
+     * Save log
+     */
+
+    accumulatePosture(
+      posture
+    );
+
+  }
+
+
+  /* ==================================================
+     POSTURE CALCULATION
+  ================================================== */
+
+  function pt(
+    lms,
+    i
+  ) {
+
+    return lms[i] || null;
+
+  }
+
+
+  function dist(
+    a,
+    b
+  ) {
+
+    return Math.hypot(
+
+      a.x - b.x,
+
+      a.y - b.y
+
+    );
+
+  }
+
+
+  function avgPoint(
+    a,
+    b
+  ) {
+
+    return {
+
+      x:
+        (a.x + b.x) / 2,
+
+      y:
+        (a.y + b.y) / 2
+
+    };
+
+  }
+
+
+  function angleFromVertical(
+    a,
+    b
+  ) {
+
+    const dx =
+      b.x - a.x;
+
+
+    const dy =
+      b.y - a.y;
+
+
+    return Math.abs(
+
+      Math.atan2(
+        dx,
+        -dy
+      ) *
+      180 /
+      Math.PI
+
+    );
+
+  }
+
+
+  function evaluatePosture(
+    lms
+  ) {
+
+    const nose =
+      pt(lms,0);
+
+
+    const lShoulder =
+      pt(lms,11);
+
+
+    const rShoulder =
+      pt(lms,12);
+
+
+    const lHip =
+      pt(lms,23);
+
+
+    const rHip =
+      pt(lms,24);
+
+
+    if (
+
+      !nose ||
+      !lShoulder ||
+      !rShoulder ||
+      !lHip ||
+      !rHip
+
+    ) {
+
+      return {
+
+        valid:
+          false,
+
+        score:
+          0,
+
+        reason:
+          'ขยับให้เห็นศีรษะ ไหล่ และสะโพก'
+
+      };
+
+    }
+
+
+    const shoulder =
+      avgPoint(
+
+        lShoulder,
+
+        rShoulder
+
+      );
+
+
+    const hip =
+      avgPoint(
+
+        lHip,
+
+        rHip
+
+      );
+
+
+    const torsoH =
+      Math.max(
+
+        0.05,
+
+        dist(
+          shoulder,
+          hip
+        )
+
+      );
+
+
+    /*
+     * Head forward
+     */
+
+    const headForward =
+      Math.abs(
+
+        nose.x -
+        shoulder.x
+
+      ) /
+      torsoH;
+
+
+    /*
+     * Shoulder tilt
+     */
+
+    const shoulderTilt =
+      angleFromVertical(
+
+        {
+
+          x:
+            lShoulder.x,
+
+          y:
+            lShoulder.y
+
+        },
+
+        {
+
+          x:
+            rShoulder.x,
+
+          y:
+            rShoulder.y
+
+        }
+
+      );
+
+
+    /*
+     * Torso lean
+     */
+
+    const torsoLean =
+      angleFromVertical(
+
+        hip,
+
+        shoulder
+
+      );
+
+
+    let score =
+      100;
+
+
+    const reasons =
+      [];
+
+
+    /*
+     * HEAD
+     */
+
+    if (
+      headForward > 0.24
+    ) {
+
+      score -= 35;
+
+
+      reasons.push(
+        'ศีรษะโน้มไปด้านหน้ามาก'
+      );
+
+    }
+
+    else if (
+      headForward > 0.18
+    ) {
+
+      score -= 18;
+
+
+      reasons.push(
+        'ลองจัดศีรษะให้อยู่เหนือแนวลำตัว'
+      );
+
+    }
+
+
+    /*
+     * SHOULDER
+     */
+
+    if (
+      shoulderTilt > 15
+    ) {
+
+      score -= 25;
+
+
+      reasons.push(
+        'ไหล่เอียง'
+      );
+
+    }
+
+    else if (
+      shoulderTilt > 9
+    ) {
+
+      score -= 12;
+
+
+      reasons.push(
+        'ปรับระดับไหล่ให้สมดุล'
+      );
+
+    }
+
+
+    /*
+     * TORSO
+     */
+
+    if (
+      torsoLean > 18
+    ) {
+
+      score -= 30;
+
+
+      reasons.push(
+        'ลำตัวเอนไปด้านข้าง/หน้า'
+      );
+
+    }
+
+    else if (
+      torsoLean > 12
+    ) {
+
+      score -= 15;
+
+
+      reasons.push(
+        'ปรับลำตัวให้ตั้งตรงขึ้น'
+      );
+
+    }
+
+
+    score =
+      Math.max(
+
+        0,
+
+        Math.min(
+          100,
+          score
+        )
+
+      );
+
+
+    return {
+
+      valid:
+        true,
+
+      score:
+        Math.round(score),
+
+      good:
+        score >= 78,
+
+      reason:
+        reasons.length
+          ? reasons.join(' • ')
+          : 'ท่านั่งอยู่ในเกณฑ์ดี',
+
+      headForward:
+        headForward,
+
+      shoulderTilt:
+        shoulderTilt,
+
+      torsoLean:
+        torsoLean
+
+    };
+
+  }
+
+
+  /* ==================================================
+     UPDATE UI
+  ================================================== */
+
+  function updateUI(
+    m
+  ) {
+
+    if (!m.valid) {
+
+      postureEl.textContent =
+        'ไม่พบท่าครบ';
+
+
+      postureEl.className =
+        'score status-bad';
+
+
+      scoreEl.textContent =
+        '—';
+
+
+      scoreBarEl.style.width =
+        '0%';
+
+
+      scoreTextEl.textContent =
+        'จัดตำแหน่งกล้อง';
+
+
+      detectionEl.textContent =
+        'ไม่ครบ';
+
+
+      reasonEl.textContent =
+        m.reason;
+
+
+      reasonEl.classList.remove(
+        'hidden'
+      );
+
+
+      return;
+
+    }
+
+
+    /*
+     * Score
+     */
+
+    scoreEl.textContent =
+      m.score;
+
+
+    scoreBarEl.style.width =
+      m.score + '%';
+
+
+    detectionEl.textContent =
+      'พบร่างกาย';
+
+
+    statusEl.textContent =
+      'กำลังตรวจจับ';
+
+
+    cameraStatusEl.textContent =
+      '● Camera ON';
+
+
+    cameraStateEl.textContent =
+      'ON';
+
+
+    /*
+     * Good
+     */
+
+    if (m.good) {
+
+      postureEl.textContent =
+        'ท่านั่งเหมาะสม';
+
+
+      postureEl.className =
+        'score status-good';
+
+
+      scoreTextEl.textContent =
+        'ดี';
+
+
+      reasonEl.textContent =
+        m.reason;
+
+
+      reasonEl.classList.add(
+        'good'
+      );
+
+
+      reasonEl.classList.remove(
+        'hidden'
+      );
+
+    }
+
+
+    /*
+     * Bad
+     */
+
+    else {
+
+      postureEl.textContent =
+        'ควรปรับท่านั่ง';
+
+
+      postureEl.className =
+        'score status-bad';
+
+
+      scoreTextEl.textContent =
+        'ควรปรับ';
+
+
+      reasonEl.textContent =
+        m.reason;
+
+
+      reasonEl.classList.remove(
+        'good'
+      );
+
+
+      reasonEl.classList.remove(
+        'hidden'
+      );
+
+    }
+
+  }
+
+
+  /* ==================================================
+     ACCUMULATE LOG
+  ================================================== */
+
+  function accumulatePosture(
+    m
+  ) {
+
+    if (!m.valid) {
+      return;
+    }
+
+
+    const now =
+      Date.now();
+
+
+    const type =
+      m.good
+        ? 'good'
+        : 'needs_adjustment';
+
+
+    /*
+     * สถานะเปลี่ยน
+     */
+
+    if (
+      stablePosture !== type
+    ) {
+
+      stablePosture =
+        type;
+
+
+      stableStartedAt =
+        now;
+
+
+      return;
+
+    }
+
+
+    /*
+     * ทุก 20 วินาที
+     */
+
+    if (
+
+      now -
+      lastLogTime >=
+      LOG_INTERVAL
+
+    ) {
+
+
+      const durationSec =
+        Math.min(
+
+          60,
+
+          Math.max(
+
+            5,
+
+            Math.round(
+
+              (
+                now -
+                stableStartedAt
+              ) / 1000
+
+            )
+
+          )
+
+        );
+
+
+      sendToParent(
+
+        'POSTURE_LOG',
+
+        {
+
+          log: {
+
+            posture:
+              m.good
+                ? 'good'
+                : 'needs_adjustment',
+
+            reason:
+              m.reason,
+
+            score:
+              m.score,
+
+            headForward:
+              m.headForward,
+
+            shoulderTilt:
+              m.shoulderTilt,
+
+            torsoLean:
+              m.torsoLean,
+
+            durationSec:
+              durationSec
+
+          }
+
+        }
+
+      );
+
+
+      lastLogTime =
+        now;
+
 
       stableStartedAt =
         now;
 
     }
 
-
-    /* =========================================================
-       BUTTON EVENTS
-    ========================================================= */
-
-    startBtn.addEventListener(
-      'click',
-      startCamera
-    );
+  }
 
 
-    stopBtn.addEventListener(
-      'click',
-      stopCamera
-    );
+  /* ==================================================
+     STOP CAMERA
+  ================================================== */
+
+  function stopCamera() {
+
+    cameraRunning =
+      false;
 
 
-    closeBtn.addEventListener(
-      'click',
-      () => {
-
-        stopCamera();
-
-        try {
-          window.close();
-        } catch (_) { }
-
-      }
-    );
+    poseProcessing =
+      false;
 
 
-    /* =========================================================
-       MESSAGE FROM INDEX.HTML
-    ========================================================= */
+    if (stream) {
 
-    window.addEventListener(
-      'message',
-      event => {
-
-        /*
-          รับเฉพาะ message
-          จาก PostureCare App
-        */
-
-        const data =
-          event.data;
+      stream
+        .getTracks()
+        .forEach(
+          track =>
+            track.stop()
+        );
 
 
-        if (
-          !data ||
-          data.source !==
-          'PostureCareApp'
-        ) {
-
-          return;
-
-        }
-
-
-        /*
-          สั่งหยุดกล้อง
-        */
-
-        if (
-          data.type ===
-          'STOP_CAMERA'
-        ) {
-
-          stopCamera();
-
-        }
-
-      }
-    );
-
-
-    /* =========================================================
-       INITIALIZE
-    ========================================================= */
-
-    function init() {
-
-      setupPose();
-
-
-      cameraMessage.classList.remove(
-        'hidden'
-      );
-
-      cameraMessage.textContent =
-        'กด "เปิดกล้อง" เพื่อเริ่ม';
-
-
-      setCameraStatus(
-        'กล้องยังไม่ทำงาน',
-        ''
-      );
-
-
-      /*
-        แจ้ง Index ว่าหน้ากล้องพร้อมแล้ว
-      */
-
-      sendToParent(
-        'CAMERA_READY'
-      );
+      stream =
+        null;
 
     }
 
 
-    init();
+    video.srcObject =
+      null;
 
 
-    /* =========================================================
-       PAGE CLOSE
-    ========================================================= */
+    startBtn.disabled =
+      false;
 
-    window.addEventListener(
-      'beforeunload',
-      () => {
 
-        if (isRunning) {
-          stopCamera();
-        }
+    stopBtn.disabled =
+      true;
 
-      }
+
+    statusEl.textContent =
+      'หยุดกล้องแล้ว';
+
+
+    cameraStatusEl.textContent =
+      'Camera OFF';
+
+
+    cameraStatusEl.classList.remove(
+      'on'
     );
 
-  </script>
+
+    cameraStateEl.textContent =
+      'OFF';
+
+
+    postureEl.textContent =
+      'พร้อมตรวจ';
+
+
+    postureEl.className =
+      'score status-good';
+
+
+    scoreEl.textContent =
+      '—';
+
+
+    scoreBarEl.style.width =
+      '0%';
+
+
+    scoreTextEl.textContent =
+      'ยังไม่มีข้อมูล';
+
+
+    detectionEl.textContent =
+      '—';
+
+
+    reasonEl.classList.add(
+      'hidden'
+    );
+
+
+    ctx.clearRect(
+
+      0,
+      0,
+
+      canvas.width,
+      canvas.height
+
+    );
+
+
+    sendToParent(
+      'CAMERA_STOPPED'
+    );
+
+  }
+
+
+  /* ==================================================
+     CAMERA ERROR
+  ================================================== */
+
+  function showCameraError(
+    error
+  ) {
+
+    let message =
+      'ไม่สามารถเปิดกล้องได้';
+
+
+    if (
+      error.name ===
+      'NotAllowedError'
+    ) {
+
+      message =
+        'ไม่ได้รับอนุญาตให้ใช้กล้อง กรุณากด Allow';
+
+    }
+
+
+    else if (
+      error.name ===
+      'NotFoundError'
+    ) {
+
+      message =
+        'ไม่พบกล้องในอุปกรณ์';
+
+    }
+
+
+    else if (
+      error.name ===
+      'NotReadableError'
+    ) {
+
+      message =
+        'กล้องกำลังถูกใช้งานโดยโปรแกรมอื่น';
+
+    }
+
+
+    else if (
+      error.name ===
+      'SecurityError'
+    ) {
+
+      message =
+        'Browser ไม่อนุญาตให้เว็บไซต์นี้ใช้กล้อง';
+
+    }
+
+
+    else if (
+      error.message
+    ) {
+
+      message =
+        error.message;
+
+    }
+
+
+    errorEl.textContent =
+      message;
+
+
+    errorEl.style.display =
+      'block';
+
+
+    statusEl.textContent =
+      'เปิดกล้องไม่สำเร็จ';
+
+
+    cameraStatusEl.textContent =
+      'Camera ERROR';
+
+
+    cameraStatusEl.classList.add(
+      'error'
+    );
+
+
+    cameraStateEl.textContent =
+      'ERROR';
+
+
+    startBtn.disabled =
+      false;
+
+
+    stopBtn.disabled =
+      true;
+
+
+    sendToParent(
+
+      'CAMERA_ERROR',
+
+      {
+
+        message:
+          message
+
+      }
+
+    );
+
+  }
+
+
+  function hideError() {
+
+    errorEl.style.display =
+      'none';
+
+
+    cameraStatusEl.classList.remove(
+      'error'
+    );
+
+  }
+
+
+  /* ==================================================
+     RESET MESSAGE
+  ================================================== */
+
+  function messageReset() {
+
+    reasonEl.classList.add(
+      'hidden'
+    );
+
+    reasonEl.classList.remove(
+      'good'
+    );
+
+  }
+
+
+  /* ==================================================
+     RECEIVE COMMAND FROM INDEX.HTML
+  ================================================== */
+
+  window.addEventListener(
+    'message',
+    function(event) {
+
+
+      if (
+        !event.data ||
+        event.data.source !==
+        'PostureCareApp'
+      ) {
+
+        return;
+
+      }
+
+
+      if (
+        event.data.type ===
+        'STOP_CAMERA'
+      ) {
+
+        stopCamera();
+
+      }
+
+    }
+  );
+
+
+  /* ==================================================
+     READY
+  ================================================== */
+
+  sendToParent(
+    'CAMERA_READY'
+  );
+
+
+  /* ==================================================
+     BEFORE UNLOAD
+  ================================================== */
+
+  window.addEventListener(
+    'beforeunload',
+    function() {
+
+
+      if (stream) {
+
+        stream
+          .getTracks()
+          .forEach(
+            track =>
+              track.stop()
+          );
+
+      }
+
+
+    }
+  );
+
+
+</script>
 
 </body>
-
 </html>
-
